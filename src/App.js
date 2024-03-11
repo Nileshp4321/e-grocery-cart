@@ -4,26 +4,31 @@ import "./App.css";
 import Text from "./Text";
 import NavBar from "./common/components/Navbar/NavBar.jsx";
 import Home from "./common/components/Home/Home.jsx";
-import Login from "./common/components/Login/Login.jsx";
+import Login from "./common/components/LoginPage/Login.jsx";
 import RetailerRoutes from "./verticals/retailer/navigations/RetailerRoutes";
 import ConsumerRoutes from "./verticals/consumer/navigations/ConsumerRoutes";
+import { User } from "./context/UserType.js";
+import About from "./common/components/Home/About.jsx";
+
 
 function App() {
-  const [user, setUser] = useState({
-    role: "retailer",
-  });
+  const [userRole, setUserRole] = useState('retailer');
+  const [user, setUser] = useState(false);
+
+  const navBarItem = ['Home', 'About', 'Contact', 'Login']
   return (
     <BrowserRouter>
-      {user && user.role === "" ? <NavBar /> : null}
+      <User.Provider value={{userRole,setUserRole,user,setUser}}>
+      { user ? null : <NavBar navBarItem={navBarItem} />}
       <Routes>
         <Route path="/" element={<Home />}></Route>
-        <Route path="/about" element={<Text />}></Route>
+        <Route path="/about" element={<About />}></Route>
         <Route path="/contact" element={<Text />}></Route>
         <Route path="/login" element={<Login />}></Route>
         <Route
           path="/retailer/*"
           element={
-            user && user.role === "retailer" ? (
+            user ? (
               <RetailerRoutes />
             ) : (
               <Navigate to="/login" />
@@ -33,7 +38,7 @@ function App() {
         <Route
           path="/consumer/*"
           element={
-            user && user.role === "consumer" ? (
+            user ? (
               <ConsumerRoutes />
             ) : (
               <Navigate to="/login" />
@@ -41,6 +46,7 @@ function App() {
           }
         />
       </Routes>
+      </User.Provider>
     </BrowserRouter>
   );
 }
