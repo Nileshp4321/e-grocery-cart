@@ -13,16 +13,16 @@ const Home = () => {
     <div className="hero-overlay bg-opacity-60"></div>
     <div className="flex flex-col hero-content text-center text-neutral-content">
       <div className="flex flex-col">
-      <p  class="text-wrap h-screen w-full  flex flex-col flex-wrap justify-center items-center ">
+      <div  className="text-wrap h-screen w-full  flex flex-col flex-wrap justify-center items-center ">
         <h3 className="text-yellow-300 text-6xl m-2 tracking-widest p-2">Welcome to <span className="text-7xl text-gray-900">Foodilivery</span>  Your One-Stop Destination for Freshness and Quality!</h3>
         <p className="text-balance text-gray-100 text-2xl tracking-widest italic  p-2">At Foodilivery, we believe that great meals start with great ingredients. As your trusted neighborhood grocer, we're dedicated to providing you with the finest selection of fresh produce, pantry essentials, and specialty items to make every meal memorable.</p>
-      </p>
+      </div>
         {/* <button className="btn btn-primary">Get Started</button> */}
       </div>
     </div>
     </div>
         <div className="text-center">
-        {/* <p class="text-wrap h-screen w-full  flex flex-col flex-wrap justify-center items-center ">
+        {/* <p className="text-wrap h-screen w-full  flex flex-col flex-wrap justify-center items-center ">
           <h3 className="text-warning text-6xl m-2 tracking-widest p-2">Welcome to <span className="text-7xl text-yellow-900">Foodilivery</span>  Your One-Stop Destination for Freshness and Quality!</h3>
           <p className="text-balance text-2xl tracking-widest italic  p-2">At Foodilivery, we believe that great meals start with great ingredients. As your trusted neighborhood grocer, we're dedicated to providing you with the finest selection of fresh produce, pantry essentials, and specialty items to make every meal memorable.</p>
         </p> */}
