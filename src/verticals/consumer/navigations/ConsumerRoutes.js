@@ -7,6 +7,7 @@ function ConsumerRoutes() {
   return (
     <Routes>
       <Route path="/" element={<ConsumerDashboard />} />
+      <Route path="/consumer" element={<ConsumerDashboard />} />
       <Route path="/add" element={<ConsumerAdd />} />
     </Routes>
   );
