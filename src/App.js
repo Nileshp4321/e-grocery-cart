@@ -8,6 +8,9 @@ import Login from "./common/components/LoginPage/Login.jsx";
 import RetailerRoutes from "./verticals/retailer/navigations/RetailerRoutes";
 import ConsumerRoutes from "./verticals/consumer/navigations/ConsumerRoutes";
 import { User } from "./context/UserType.js";
+import About from "./common/components/Home/About.jsx";
+
+
 function App() {
   const [userRole, setUserRole] = useState('retailer');
   const [user, setUser] = useState(false);
@@ -19,7 +22,7 @@ function App() {
       { user ? null : <NavBar navBarItem={navBarItem} />}
       <Routes>
         <Route path="/" element={<Home />}></Route>
-        <Route path="/about" element={<Text />}></Route>
+        <Route path="/about" element={<About />}></Route>
         <Route path="/contact" element={<Text />}></Route>
         <Route path="/login" element={<Login />}></Route>
         <Route

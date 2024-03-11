@@ -1,11 +1,17 @@
 import React, { useContext, useState } from "react";
-import { getAuth,createUserWithEmailAndPassword,signInWithPopup,signInWithEmailAndPassword, signOut} from "firebase/auth";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithPopup,
+  signInWithEmailAndPassword,
+  signOut,
+} from "firebase/auth";
 import { initializeApp } from "firebase/app";
 import { GoogleAuthProvider } from "firebase/auth";
-import { getDatabase, ref, set ,child, get } from "firebase/database";
+import { getDatabase, ref, set, child, get } from "firebase/database";
 import { doc, getDoc, getFirestore } from "firebase/firestore";
 import { useNavigate } from "react-router";
-import {User} from "../../../context/UserType"
+import { User } from "../../../context/UserType";
 
 //firebase configuration
 const firebaseConfig = {
@@ -25,14 +31,14 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase();
 // console.log("Databasee"+db)
-const dbref=ref(db);
+const dbref = ref(db);
 // console.log("Database ref "+dbref)
 
 const Login = ({ toggleScreen }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate=useNavigate();
-  const {userRole,setUserRole,user,setUser}=useContext(User);
+  const navigate = useNavigate();
+  const { userRole, setUserRole, user, setUser } = useContext(User);
 
   const handleEmail = (e) => {
     setEmail(e.target.value);
@@ -42,106 +48,110 @@ const Login = ({ toggleScreen }) => {
     setPassword(e.target.value);
   };
 
-  const handleForm = async(e) => {
+  const handleForm = async (e) => {
     e.preventDefault();
 
-    //   signInWithEmailAndPassword(auth, email, password)
-    // .then((userCredential) => {
-    //   // Signed in
-    //   const user = userCredential.user;
-    //   console.log(user)
-    //   // ...
-    // })
-    // .catch((error) => {
-    //   console
-    // });
-    const db = getFirestore();
-    const docRef = doc(db, "users","tArJnElZNjSS1top9QGDxIbJh2e2");
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
-      console.log("Document data:", docSnap.data());
-    } else {
-      // docSnap.data() will be undefined in this case
-      console.log("No such document!");
-    }
+    // //   signInWithEmailAndPassword(auth, email, password)
+    // // .then((userCredential) => {
+    // //   // Signed in
+    // //   const user = userCredential.user;
+    // //   console.log(user)
+    // //   // ...
+    // // })
+    // // .catch((error) => {
+    // //   console
+    // // });
+    // const db = getFirestore();
+    // const docRef = doc(db, "users","tArJnElZNjSS1top9QGDxIbJh2e2");
+    // const docSnap = await getDoc(docRef);
+    // if (docSnap.exists()) {
+    //   console.log("Document data:", docSnap.data());
+    // } else {
+    //   // docSnap.data() will be undefined in this case
+    //   console.log("No such document!");
+    // }
   };
-  const signInWithEmailAndPasswordFun=()=>{
+  const signInWithEmailAndPasswordFun = () => {
     // console.log("hello")
     signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      // Signed in
-      // console.log(userCredential);
-      const user = userCredential.user;
-      get(child(dbref,"userInfo" + user.uid)).then((snapshot)=>{
-          if(snapshot.exists){
-            console.log("inside snapshot")
-            sessionStorage.setItem("userLogInfo",JSON.stringify({
-              FullName:snapshot.val().FullName,
-              Email:snapshot.val().Email,
-            }))
-            sessionStorage.setItem("userCredInfo",JSON.stringify({user}))
+      .then((userCredential) => {
+        // Signed in
+        // console.log(userCredential);
+        const user = userCredential.user;
+        console.log(user);
+        get(child(dbref, "userInfo" + user.uid)).then((snapshot) => {
+          if (snapshot.exists) {
+            console.log(snapshot);
+            sessionStorage.setItem(
+              "userLogInfo",
+              JSON.stringify({
+                // FullName:snapshot.val().FullName,
+                Email: snapshot.val().Email,
+              })
+            );
+            sessionStorage.setItem("userCredInfo", JSON.stringify({ user }));
             // console.log(snapshot.val().UserType);
-            if(snapshot.val().UserType==="Retailer"){
-             
-              setUserRole("retailer")
-              setUser(snapshot.val().Email)
-              navigate("/retailer")
-            }
-            else if(snapshot.val().UserType==="Consumer") {
-              console.log(snapshot.val().UserType==="Consumer");
-              setUser(snapshot.val().Email)
-              setUserRole("consumer")
-              navigate("/consumer")
+            if (snapshot.val().UserType === "Retailer") {
+              setUserRole("retailer");
+              setUser(snapshot.val().Email);
+              navigate("/retailer");
+            } else if (snapshot.val().UserType === "Consumer") {
+              console.log(snapshot.val().UserType === "Consumer");
+              setUser(snapshot.val().Email);
+              setUserRole("consumer");
+              navigate("/consumer");
               // console.log(snapshot.val().UserType)
             }
-          }
-          else{
+          } else {
             console.log("Some error line no 97 in login.jsx");
-
           }
+        });
+        // console.log(user)
+        // navigate("/retailer")
+        // ...
       })
-      // console.log(user)
-      // navigate("/retailer")
-      // ...
-    })
-    .catch((error) => {
-      console.log("error "+error)
-    });
-  }
+      .catch((error) => {
+        console.log("error " + error);
+      });
+  };
   const signInWithPopUps = async () => {
     signInWithPopup(auth, provider)
       .then((res) => {
-      //  setUser(res.user.email);
-      console.log("hello")
-         const user=res.user;
-         get(child(dbref,"userInfo" + user.uid)).then((snapshot)=>{
-          if(snapshot.exists){
-
-            sessionStorage.setItem("userLogInfo",JSON.stringify({
-              FullName:snapshot.val().FullName,
-              Email:snapshot.val().Email,
-            }))
-            sessionStorage.setItem("userCredInfo",JSON.stringify({user}))
-            // console.log(snapshot.val().UserType);
-            if(snapshot.val().UserType==="Retailer"){
-              console.log(snapshot.val().UserType==="Consumer");
-              setUserRole("retailer")
-              setUser(snapshot.val().Email)
-              navigate("/retailer")
+        //  setUser(res.user.email);
+        const user = res.user;
+        //  console.log(user);
+        get(child(dbref, "userInfo" + user.uid)).then((snapshot) => {
+          if (snapshot.exists) {
+            if (!snapshot.val() === null) {
+              sessionStorage.setItem(
+                "userLogInfo",
+                JSON.stringify({
+                  FullName: snapshot.val().FullName,
+                  Email: snapshot.val().Email,
+                })
+              );
+              sessionStorage.setItem("userCredInfo", JSON.stringify({ user }));
+              // console.log(snapshot.val().UserType);
+              if (snapshot.val().UserType === "Retailer") {
+                setUserRole("retailer");
+                setUser(snapshot.val().Email);
+                navigate("/retailer");
+              } else if (snapshot.val().UserType === "Consumer") {
+                console.log(snapshot.val().UserType === "Consumer");
+                setUser(snapshot.val().Email);
+                setUserRole("consumer");
+                navigate("/consumer");
+                // console.log(snapshot.val().UserType)
+              }
+            } else {
+              alert(
+                "This account is not Exist Please First Create Your Account"
+              );
             }
-            
-            // else if(snapshot.val().UserType==="Consumer") {
-            //   setUserRole("consumer")
-            //   navigate("/consumer")
-            //   // console.log(snapshot.val().UserType)
-            // }
-          }
-          else{
+          } else {
             console.log("Some error line no 97 in login.jsx");
-
           }
-      })
-      
+        });
       })
       .catch((error) => {
         console.log("Error " + error);
@@ -151,9 +161,9 @@ const Login = ({ toggleScreen }) => {
   const changeToSignUp = () => {
     toggleScreen(false);
   };
-  
+
   // const getUser=async()=>{
-    
+
   // }
 
   return (
@@ -190,7 +200,6 @@ const Login = ({ toggleScreen }) => {
             />
           </div>
           <div className="flex items-center justify-between">
-
             <div className="text-sm">
               <a href="#" className="text-yellow-400">
                 Forgot your password?
@@ -235,7 +244,8 @@ const SignUp = ({ toggleScreen }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
-  const [userType,setUserType] = useState("");
+  const [userType, setUserType] = useState("");
+  const navigate=useNavigate();
 
   // //firebase configuration
   // const firebaseConfig = {
@@ -268,9 +278,9 @@ const SignUp = ({ toggleScreen }) => {
   const handleFullName = (e) => {
     setFullName(e.target.value);
   };
-  const retriveData=()=>{
-     console.log(ref(db));
-  }
+  // const retriveData = () => {
+  //   console.log(ref(db));
+  // };
   const createUser = async () => {
     const userCredential = await createUserWithEmailAndPassword(
       auth,
@@ -282,11 +292,12 @@ const SignUp = ({ toggleScreen }) => {
       Email: email,
       FullName: fullName,
       Password: password,
-      UserType:userType,
+      UserType: userType,
     });
-    console.log(userCredential);
+    if(userCredential){
+      toggleScreen(true)
+    }
   };
-   
 
   const changeToSignIn = () => {
     toggleScreen(true);
@@ -324,7 +335,10 @@ const SignUp = ({ toggleScreen }) => {
             <label className="text-sm  tracking-widetext-sm font-medium tracking-wide">
               User Type
             </label>
-            <select onChange={handleUserType} className="w-full text-base px-4 py-2 border bg-white border-gray-300 rounded-lg focus:outline-none focus:border-yellow-400">
+            <select
+              onChange={handleUserType}
+              className="w-full text-base px-4 py-2 border bg-white border-gray-300 rounded-lg focus:outline-none focus:border-yellow-400"
+            >
               <option>-----Select-----</option>
               <option>Retailer</option>
               <option>Consumer</option>
@@ -383,30 +397,31 @@ const SignUp = ({ toggleScreen }) => {
     </div>
   );
 };
-const LogOut=()=>{
-  const navigate=useNavigate();
-  const {user,setUser}=useContext(User);
+const LogOut = () => {
+  const { user, setUser } = useContext(User);
+  const navigate = useNavigate();
 
-  // const signout=
-  return(
-    <>
-    <button onClick={()=>{
-      signOut(auth).then(() => {
-        // Sign-out successful.
-        setUser("");
-        navigate("/login")
-        // console.log("hellos")
-    
-      }).catch((error) => {
-        // An error happened
-        console.log("error"+error)
-      });
-    }}>Sign Out</button>
-    </>
-  )
-  
-}
-const ToggleScreen = ({userType}) => {
+  return (
+    <button
+      onClick={() => {
+        signOut(auth)
+          .then(() => {
+            // Sign-out successful.
+            setUser("");
+            navigate("/login");
+            // console.log("hellos")
+          })
+          .catch((error) => {
+            // An error happened
+            console.log("error" + error);
+          });
+      }}
+    >
+      Sign Out
+    </button>
+  );
+};
+const ToggleScreen = ({ userType }) => {
   const [showLogin, setShowLogin] = useState(true);
   return (
     <>
@@ -419,5 +434,5 @@ const ToggleScreen = ({userType}) => {
   );
 };
 
-export { SignUp, Login,LogOut };
+export { SignUp, Login, LogOut };
 export default ToggleScreen;
