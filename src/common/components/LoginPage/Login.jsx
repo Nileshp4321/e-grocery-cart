@@ -171,7 +171,7 @@ const Login = ({ toggleScreen }) => {
       <div className="p-6 bg-white flex justify-center items-center flex-col rounded-2xl w-full md:w-3/4 lg:w-2/4 xl:w-2/4">
         {/* <form onSubmit={handleForm}> */}
         <div className="mb-4 text-center">
-          <h3 className="font-semibold text-3xl text-yellow-400">Sign In </h3>
+          <h3 className="font-semibold text-3xl text-yellow-400">Log In </h3>
           <p className="text-gray-500 text-xl">
             Please Log In to your account.
           </p>
