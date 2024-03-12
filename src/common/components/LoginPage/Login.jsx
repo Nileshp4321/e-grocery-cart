@@ -173,7 +173,7 @@ const Login = ({ toggleScreen }) => {
         <div className="mb-4 text-center">
           <h3 className="font-semibold text-3xl text-yellow-400">Sign In </h3>
           <p className="text-gray-500 text-xl">
-            Please sign in to your account.
+            Please Log In to your account.
           </p>
         </div>
         <div className="space-y-6 w-full">
