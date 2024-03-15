@@ -13,13 +13,16 @@ import About from "./common/components/Home/About.jsx";
 
 function App() {
   const [userRole, setUserRole] = useState('retailer');
-  const [user, setUser] = useState(false);
+  const [user, setUser] = useState(null);
+  // const {Token}=localStorage.getItem("userLogInfo");
 
   const navBarItem = ['Home', 'About', 'Contact', 'Login']
   return (
     <BrowserRouter>
       <User.Provider value={{userRole,setUserRole,user,setUser}}>
+        
       { user ? null : <NavBar navBarItem={navBarItem} />}
+      
       <Routes>
         <Route path="/" element={<Home />}></Route>
         <Route path="/about" element={<About />}></Route>
