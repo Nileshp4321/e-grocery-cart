@@ -30,9 +30,14 @@ const ProductItems = () => {
   const userId = auth.currentUser.uid;
   const email = auth.currentUser.email;
   const starCountRef = ref(db, `Products/`);
+  const [isLoading,setIsLoading]=useState(true);
   let records = [];
 
-  useEffect(() => {}, [isComponentUpdate]);
+  useEffect(() => {
+    setTimeout(()=>{
+      setIsLoading(false)
+    },2800);
+  }, [isComponentUpdate]);
 
   onValue(starCountRef, (snapshot) => {
     // const data = snapshot.val();
@@ -213,6 +218,8 @@ const ProductItems = () => {
       <div className="mb-4">
         <h1 className="text-5xl text-center">Products Items</h1>
       </div>
+      {
+        !isLoading?
       <div className="flex flex-row w-full ">
         {records.map((item) => {
           return (
@@ -229,21 +236,14 @@ const ProductItems = () => {
                     alt="Shoes"
                   />
                 </figure>
-                <div className="card-body flex flex-wrap jsutify-center">
-                  <h1 className="text-3xl">{item.ItemName}</h1>
-                  <h1 className="text-2xl">{item.ItemLabel}</h1>
-                  <h1 className="text-xl">{item.Category}</h1>
-                  <h2 className="card-title">{item.Price}</h2>
-                  <p>{"Store Name : " + item.StoreName}</p>
+                <div className="card-body flex flex-wrap jutify-center">
+                  <h1 className="text-6xl font-bold   ">{item.ItemName}</h1>
+                  <h1 className="text-3xl font-bold  ">{item.ItemLabel}</h1>
+                  <h1 className="text-xl  font-bold  ">{item.Category}</h1>
+                  <h2 className="card-title font-bold">{item.Price}</h2>
+                  <h2 className="card-title font-bold">{"Quantity : "+item.Quantity}</h2>
+                  <p className="card-title font-bold">{"Store Name : " + item.StoreName}</p>
                   <div className="w-42 card-actions flex flex-wrap justify-center items-center ">
-                    {/* <button
-                      className="btn btn-primary"
-                      onClick={() =>
-                        document.getElementById("my_modal_3").showModal()
-                      }
-                    >
-                      Update
-                    </button> */}
                     <button
                       className="btn btn-error"
                       onClick={() => {
@@ -252,15 +252,18 @@ const ProductItems = () => {
                     >
                       Delete
                     </button>
-                    {/* <Model cartId={item.id} cartDetails={item} /> */}
                   </div>
                 </div>
               </div>}
-              {/* </div> */}
             </>
           );
         })}
       </div>
+      :
+      <div className="flex justify-center items-center h-screen">
+        <span className="loading loading-bars loading-lg"></span>
+      </div>
+      }
     </div>
   );
 };

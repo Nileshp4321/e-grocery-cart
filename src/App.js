@@ -9,6 +9,7 @@ import RetailerRoutes from "./verticals/retailer/navigations/RetailerRoutes";
 import ConsumerRoutes from "./verticals/consumer/navigations/ConsumerRoutes";
 import { User } from "./context/UserType.js";
 import About from "./common/components/Home/About.jsx";
+import Contact from "./common/components/Home/Contact.jsx";
 
 
 function App() {
@@ -26,7 +27,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />}></Route>
         <Route path="/about" element={<About />}></Route>
-        <Route path="/contact" element={<Text />}></Route>
+        <Route path="/contact" element={<Contact />}></Route>
         <Route path="/login" element={<Login />}></Route>
         <Route
           path="/retailer/*"

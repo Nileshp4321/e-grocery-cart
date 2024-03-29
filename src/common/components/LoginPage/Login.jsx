@@ -104,7 +104,7 @@ const Login = ({ toggleScreen }) => {
               // console.log(snapshot.val().UserType)
             }
           } else {
-            console.log("Some error line no 97 in login.jsx");
+            alert("User is not find "+error);
           }
         });
         // console.log(user)
@@ -112,7 +112,7 @@ const Login = ({ toggleScreen }) => {
         // ...
       })
       .catch((error) => {
-        console.log("error " + error);
+        alert("User is not find "+error);
       });
   };
   const signInWithPopUps = async () => {
@@ -156,7 +156,7 @@ const Login = ({ toggleScreen }) => {
         });
       })
       .catch((error) => {
-        console.log("Error " + error);
+        alert("User is not find "+error);
       });
   };
 
@@ -424,7 +424,7 @@ const LogOut = () => {
     </button>
   );
 };
-const ToggleScreen = ({ userType }) => {
+const ToggleScreen = () => {
   const [showLogin, setShowLogin] = useState(true);
   return (
     <>

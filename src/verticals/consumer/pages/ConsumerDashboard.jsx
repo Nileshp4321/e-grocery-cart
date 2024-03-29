@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { LogOut } from "../../../common/components/LoginPage/Login";
 // import Cart from "./Cart";
 import ProductItems from "./ProductItems";
+import{auth} from '../../../common/components/FirebaseSetup/firebaseconfig'
+import ConsumerAdd from "./ConsumerAdd";
 
 function ConsumerDashboard() {
   //   const { FullName, Email } = JSON.parse(sessionStorage.getItem("userLogInfo")) ;
@@ -56,12 +58,12 @@ function ConsumerDashboard() {
                   <path d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z" />
                   <path d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z" />
                 </svg>
-                <span className="ms-3">Dashboard</span>
+                <span className="ms-3">{auth.currentUser.email}</span>
               </a>
             </li>
             <li
               onClick={() => {
-                showComponent("Cart");
+                showComponent("ConsumerAdd");
               }}
             >
               <a
@@ -136,6 +138,9 @@ function ConsumerDashboard() {
         )} */}
         {activeComponent === "Products" && (
           <ProductItems setaActiveComponent={setaActiveComponent} />
+        )}
+         {activeComponent === "ConsumerAdd" && (
+          <ConsumerAdd setaActiveComponent={setaActiveComponent} />
         )}
       </div>
     </div>
