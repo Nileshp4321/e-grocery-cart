@@ -10,6 +10,7 @@ import ConsumerRoutes from "./verticals/consumer/navigations/ConsumerRoutes";
 import { User } from "./context/UserType.js";
 import About from "./common/components/Home/About.jsx";
 import Contact from "./common/components/Home/Contact.jsx";
+import PaymentReceipt from "./verticals/consumer/pages/PaymentReceipt.jsx";
 
 
 function App() {
@@ -29,11 +30,22 @@ function App() {
         <Route path="/about" element={<About />}></Route>
         <Route path="/contact" element={<Contact />}></Route>
         <Route path="/login" element={<Login />}></Route>
+        
         <Route
           path="/retailer/*"
           element={
             user ? (
               <RetailerRoutes />
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
+        />
+        <Route
+          path="/consumer/payment"
+          element={
+            user ? (
+              <PaymentReceipt />
             ) : (
               <Navigate to="/login" />
             )

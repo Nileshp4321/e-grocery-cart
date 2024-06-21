@@ -104,7 +104,7 @@ const Login = ({ toggleScreen }) => {
               // console.log(snapshot.val().UserType)
             }
           } else {
-            alert("User is not find "+error);
+            alert("User is not find ");
           }
         });
         // console.log(user)
