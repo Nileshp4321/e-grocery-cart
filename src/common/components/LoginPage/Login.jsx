@@ -51,16 +51,16 @@ const Login = ({ toggleScreen }) => {
   const handleForm = async (e) => {
     e.preventDefault();
 
-    // //   signInWithEmailAndPassword(auth, email, password)
-    // // .then((userCredential) => {
-    // //   // Signed in
-    // //   const user = userCredential.user;
-    // //   console.log(user)
-    // //   // ...
-    // // })
-    // // .catch((error) => {
-    // //   console
-    // // });
+    //   signInWithEmailAndPassword(auth, email, password)
+    // .then((userCredential) => {
+    //   // Signed in
+    //   const user = userCredential.user;
+    //   console.log(user)
+    //   // ...
+    // })
+    // .catch((error) => {
+    //   console
+    // });
     // const db = getFirestore();
     // const docRef = doc(db, "users","tArJnElZNjSS1top9QGDxIbJh2e2");
     // const docSnap = await getDoc(docRef);
@@ -87,23 +87,24 @@ const Login = ({ toggleScreen }) => {
               JSON.stringify({
                 // FullName:snapshot.val().FullName,
                 Email: snapshot.val().Email,
+                Token:user.accessToken
               })
             );
             sessionStorage.setItem("userCredInfo", JSON.stringify({ user }));
             // console.log(snapshot.val().UserType);
             if (snapshot.val().UserType === "Retailer") {
               setUserRole("retailer");
-              setUser(snapshot.val().Email);
+              setUser(user.accessToken);
               navigate("/retailer");
             } else if (snapshot.val().UserType === "Consumer") {
               console.log(snapshot.val().UserType === "Consumer");
-              setUser(snapshot.val().Email);
+              setUser(user.accessToken);
               setUserRole("consumer");
               navigate("/consumer");
               // console.log(snapshot.val().UserType)
             }
           } else {
-            console.log("Some error line no 97 in login.jsx");
+            alert("User is not find ");
           }
         });
         // console.log(user)
@@ -111,7 +112,7 @@ const Login = ({ toggleScreen }) => {
         // ...
       })
       .catch((error) => {
-        console.log("error " + error);
+        alert("User is not find "+error);
       });
   };
   const signInWithPopUps = async () => {
@@ -128,17 +129,18 @@ const Login = ({ toggleScreen }) => {
                 JSON.stringify({
                   FullName: snapshot.val().FullName,
                   Email: snapshot.val().Email,
+                  Token:user.accessToken
                 })
               );
               sessionStorage.setItem("userCredInfo", JSON.stringify({ user }));
               // console.log(snapshot.val().UserType);
               if (snapshot.val().UserType === "Retailer") {
                 setUserRole("retailer");
-                setUser(snapshot.val().Email);
+                setUser(user.accessToken);
                 navigate("/retailer");
               } else if (snapshot.val().UserType === "Consumer") {
                 console.log(snapshot.val().UserType === "Consumer");
-                setUser(snapshot.val().Email);
+                setUser(user.accessToken);
                 setUserRole("consumer");
                 navigate("/consumer");
                 // console.log(snapshot.val().UserType)
@@ -154,7 +156,7 @@ const Login = ({ toggleScreen }) => {
         });
       })
       .catch((error) => {
-        console.log("Error " + error);
+        alert("User is not find "+error);
       });
   };
 
@@ -304,7 +306,7 @@ const SignUp = ({ toggleScreen }) => {
   };
   return (
     <div className="flex justify-center items-center flex-wrap w-full z-10">
-      <div className="p-6 bg-white flex justify-center items-center flex-col rounded-2xl w-full md:w-3/4 lg:w-2/4 xl:w-2/4">
+      <div className="glass p-6 bg-white flex justify-center items-center flex-col rounded-2xl w-full md:w-3/4 lg:w-2/4 xl:w-2/4">
         <div className="mb-4 text-center">
           <h3 className="font-semibold text-3xl text-yellow-400">Sign Up </h3>
         </div>
@@ -407,7 +409,8 @@ const LogOut = () => {
         signOut(auth)
           .then(() => {
             // Sign-out successful.
-            setUser("");
+            setUser(null);
+            sessionStorage.removeItem("userLogInfo");
             navigate("/login");
             // console.log("hellos")
           })
@@ -421,7 +424,7 @@ const LogOut = () => {
     </button>
   );
 };
-const ToggleScreen = ({ userType }) => {
+const ToggleScreen = () => {
   const [showLogin, setShowLogin] = useState(true);
   return (
     <>

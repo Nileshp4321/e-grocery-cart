@@ -9,27 +9,43 @@ import RetailerRoutes from "./verticals/retailer/navigations/RetailerRoutes";
 import ConsumerRoutes from "./verticals/consumer/navigations/ConsumerRoutes";
 import { User } from "./context/UserType.js";
 import About from "./common/components/Home/About.jsx";
+import Contact from "./common/components/Home/Contact.jsx";
+import PaymentReceipt from "./verticals/consumer/pages/PaymentReceipt.jsx";
 
 
 function App() {
   const [userRole, setUserRole] = useState('retailer');
-  const [user, setUser] = useState(false);
+  const [user, setUser] = useState(null);
+  // const {Token}=localStorage.getItem("userLogInfo");
 
   const navBarItem = ['Home', 'About', 'Contact', 'Login']
   return (
     <BrowserRouter>
       <User.Provider value={{userRole,setUserRole,user,setUser}}>
+        
       { user ? null : <NavBar navBarItem={navBarItem} />}
+      
       <Routes>
         <Route path="/" element={<Home />}></Route>
         <Route path="/about" element={<About />}></Route>
-        <Route path="/contact" element={<Text />}></Route>
+        <Route path="/contact" element={<Contact />}></Route>
         <Route path="/login" element={<Login />}></Route>
+        
         <Route
           path="/retailer/*"
           element={
             user ? (
               <RetailerRoutes />
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
+        />
+        <Route
+          path="/consumer/payment"
+          element={
+            user ? (
+              <PaymentReceipt />
             ) : (
               <Navigate to="/login" />
             )
