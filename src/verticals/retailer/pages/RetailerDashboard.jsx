@@ -1,19 +1,34 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { LogOut } from "../../../common/components/LoginPage/Login";
 import Cart from "./Cart";
 import ProductItems from "./ProductItems";
 import {auth} from "../../../common/components/FirebaseSetup/firebaseconfig";
+import { useRef } from "react";
 function RetailerDashboard() {
-  //   const { FullName, Email } = JSON.parse(sessionStorage.getItem("userLogInfo")) ;
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [activeComponent, setaActiveComponent] = useState(null);
+  const sidebarRef = useRef(null);
+
   const showComponent = (component) => {
     setaActiveComponent(component);
+    setIsSidebarOpen(false);
   };
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
+        setIsSidebarOpen(false);
+      }
+    };
+
+    document.addEventListener("click", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
   return (
     <div>
     {/* Hamburger button for mobile view */}
